@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">אפליקציית הסרט</string>
+    <string name="confirm">אשר</string>
+    <string name="select_adult">כרטיס מבוגר:</string>
+    <string name="adult">מבוגר</string>
+    <string name="number_of_adult">כרטיס מבוגר: %1$d (*10₪)</string>
+    <string name="child">ילד</string>
+    <string name="cost">סה"כ עלות:</string>
+    <string name="select_child">כרטיס ילד:</string>
+    <string name="number_of_child">כרטיס ילד: %1$d (*5₪)</string>
+    <string name="get_tickets">השג כרטיסים</string>
+    <string name="select_date">בחר תאריך</string>
+    <string name="total_cost">סה\"כ עלות: %1$d₪</string>
+    <string name="branch_name">בחר סניף: %1$s</string>
+    <string name="selected_branch">סניף:</string>
+    <string name="event_date">תאריך:</string>
+    <string name="num_adult">מספר כרטיסי מבוגר:</string>
+    <string name="num_child">מספר כרטיסי ילד:</string>
+    <string name="select_branch">בחר סניף</string>
+    <string name="date">תאריך: %1$s</string>
+    <string name="movie_details">רודיסט צעיר ממטאליקה בשם טריפ (דיין דהאן) יוצא למסע אפוקליפטי בנוף עירוני מושחת כשהלהקה מנגנת בפני קהל זירה סולד-אאוט בסרט הקונצרטים עתיר הקונספט הזה של הבמאי נמרוד אנטאל (טורפים).</string>
+    <string name="description">מידע סרט</string>
+    <string name="ok">בסדר</string>
+    <string name="purchase_details">אודות הרכישה</string>
+    <string name="order_summary">סיכום הרכישה</string>
+    <string name="no_purchase_info_available">אין רכישות רשומות. נא לבצע הזמנה.</string>
+    <string name="movie_image">תמונת הסרט</string>
+    <string name="order_history">היסטוריה</string>
+    <string name="please_select_a_valid_branch">אנא בחר סניף</string>
+    <string name="adults_selected">כרטיסי מבוגר: %1$s</string>
+    <string name="child_selected">כרטיסי ילד: %1$s</string>
+    <string name="purchase_confirmed">רכישה אושרה</string>
+    <string name="glilot">גלילות</string>
+    <string name="rishon">ראשון לציון</string>
+    <string name="jerusalem">ירושליים</string>
+</resources>
