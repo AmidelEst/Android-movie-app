@@ -35,52 +35,54 @@
         app:layout_constraintStart_toEndOf="@id/history"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/ivMoviePoster"
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerImages"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="350dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:clipToPadding="false"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="25dp"
-        android:contentDescription="@string/movie_image"
-        android:src="@drawable/through_the_never"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMovieTitle" />
 
+
     <TextView
-        android:layout_marginTop="25dp"
         android:id="@+id/tvAdultLabel"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
         android:text="@string/select_adult"
         android:textColor="@color/yellow"
         android:textSize="18sp"
-        android:gravity="center"
         app:layout_constraintEnd_toStartOf="@id/spinnerAdultAmount"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivMoviePoster" />
+        app:layout_constraintTop_toBottomOf="@id/viewPagerImages" />
 
     <Spinner
-        android:layout_marginTop="25dp"
         android:id="@+id/spinnerAdultAmount"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginTop="25dp"
         android:dropDownHeight="100dp"
         android:entries="@array/ticket_numbers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/tvAdultLabel"
-        app:layout_constraintTop_toBottomOf="@id/ivMoviePoster" />
+        app:layout_constraintTop_toBottomOf="@id/viewPagerImages" />
 
     <TextView
         android:id="@+id/tvChildLabel"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:gravity="center"
         android:text="@string/select_child"
         android:textColor="@color/yellow"
         android:textSize="18sp"
-        android:gravity="center"
         app:layout_constraintEnd_toStartOf="@id/spinnerChildAmount"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,10 +103,10 @@
         android:id="@+id/tvBranchLabel"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:gravity="center"
         android:text="@string/select_branch"
         android:textColor="@color/yellow"
         android:textSize="18sp"
-        android:gravity="center"
         app:layout_constraintEnd_toStartOf="@id/spinnerBranchLocation"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +164,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivMoviePoster" />
+        app:layout_constraintTop_toBottomOf="@id/viewPagerImages" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"

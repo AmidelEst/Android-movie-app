@@ -7,6 +7,7 @@
     <string name="number_of_adult">כרטיס מבוגר: %1$d (*10₪)</string>
     <string name="child">ילד</string>
     <string name="cost">סה"כ עלות:</string>
+    <string name="select">-בחר-</string>
     <string name="select_child">כרטיס ילד:</string>
     <string name="number_of_child">כרטיס ילד: %1$d (*5₪)</string>
     <string name="get_tickets">השג כרטיסים</string>
@@ -28,8 +29,8 @@
     <string name="movie_image">תמונת הסרט</string>
     <string name="order_history">היסטוריה</string>
     <string name="please_select_a_valid_branch">אנא בחר סניף</string>
-    <string name="adults_selected">כרטיסי מבוגר: %1$s</string>
-    <string name="child_selected">כרטיסי ילד: %1$s</string>
+    <string name="adults_selected">כרטיסי מבוגר: %1$d</string>
+    <string name="child_selected">כרטיסי ילד: %1$d</string>
     <string name="purchase_confirmed">רכישה אושרה</string>
     <string name="glilot">גלילות</string>
     <string name="rishon">ראשון לציון</string>

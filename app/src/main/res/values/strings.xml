@@ -16,6 +16,7 @@
     <string name="get_tickets">Get Tickets</string>
     <string name="select_date">Select Dates</string>
     <string name="total_cost">Total Cost: %1$d₪</string>
+    <string name="select">-Select-</string>
     <string name="branch_name">Branch Name: %1$s</string>
     <string name="select_branch">Select Branch:</string>
     <string name="selected_branch">Branch:</string>
@@ -29,8 +30,8 @@
     <string name="movie_image">Movie Image</string>
     <string name="order_history">History</string>
     <string name="please_select_a_valid_branch">Please select a valid branch</string>
-    <string name="adults_selected">Adults Selected: %1$s</string>
-    <string name="child_selected">Child Selected: %1$s</string>
+    <string name="adults_selected">Adults Selected: %1$d</string>
+    <string name="child_selected">Child Selected: %1$d</string>
     <string name="purchase_confirmed">Purchase Confirmed</string>
     <string name="glilot">Glilot</string>
     <string name="rishon">Rishon Lezion</string>

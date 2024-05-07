@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="ticket_numbers">
+        <item>@string/select</item>
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -10,11 +11,9 @@
     </string-array>
 
     <string-array name="branches_names">
-        <item>@string/empty</item>
+        <item>@string/select</item>
         <item>@string/glilot</item>
         <item>@string/rishon</item>
         <item>@string/jerusalem</item>
     </string-array>
-
-    <string name="empty" translatable="false">"------------"</string>
 </resources>
