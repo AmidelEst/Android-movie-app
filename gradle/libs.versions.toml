@@ -15,8 +15,13 @@ materialIconsExtended = "1.6.7"
 constraintlayout = "2.1.4"
 material3 = "1.2.1"
 circleindicator = "2.1.6"
+splashscreen = "1.0.1"
+
+
+
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 androidx-material3-window-size-info = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
 junit = { module = "junit:junit", version.ref = "junit" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
