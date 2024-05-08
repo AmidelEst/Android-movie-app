@@ -2,8 +2,8 @@ package com.example.movieapp
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +15,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import me.relex.circleindicator.CircleIndicator3
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,12 +28,12 @@ data class TicketPurchase(
     val childTicket: Int,
     val totalCost: Int
 ) {
-    override fun toString(): String {
-        return "Branch Name: $branchName\n" +
-                "Event Date: $eventDate\n" +
-                "Number of Adult Tickets: $adultTicket\n" +
-                "Number of Child Tickets: $childTicket\n" +
-                "Total Cost: $totalCost ₪"
+    fun toLocalizedString(context: Context): String {
+        return context.getString(R.string.branch_name, branchName) + "\n" +
+                context.getString(R.string.event_date, eventDate) + "\n" +
+                context.getString(R.string.adult_tickets, adultTicket) + "\n" +
+                context.getString(R.string.child_tickets, childTicket) + "\n" +
+                context.getString(R.string.total_cost, totalCost)
     }
 }
 // image viewer
@@ -47,26 +50,15 @@ class ImageAdapter(private val images: List<Int>) : RecyclerView.Adapter<ImageAd
         }
         return ImageViewHolder(imageView)
     }
-
-    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.imageView.setImageResource(images[position])
-    }
-
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) = holder.imageView.setImageResource(images[position])
     override fun getItemCount() = images.size
 }
 
-// Interface to handle date selection events
-interface DateSelectedListener {
-    fun onDateSelected(date: String)
-}
-
 // Main activity class that handles UI and user interactions
-class MainActivity : AppCompatActivity(), DateSelectedListener {
+class MainActivity : AppCompatActivity() {
     // global vars
 
     private var ticketPurchase: TicketPurchase? = null  // Global variable to store the ticket purchase
-
-
     private lateinit var dateBtn: Button
     private lateinit var btnGetTickets: Button
 
@@ -89,9 +81,11 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
             insets
         }
         //-----------------------------------------//
+        btnGetTickets = findViewById(R.id.btnGetTickets)
+        btnGetTickets.isEnabled = true
 
         // date picker dialog
-        dateBtn = findViewById<Button>(R.id.date_dialog_btn)
+        dateBtn = findViewById(R.id.date_dialog_btn)
         dateBtn.setOnClickListener {
             // Current date and time instance
             val c = Calendar.getInstance()
@@ -103,8 +97,10 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
                 // Formatting the date as a string
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                 val selectedDate = dateFormat.format(selectedCalendar .time)
-                // Call function to handle the selected date
-                onDateSelected(selectedDate)
+                // When selecting valid date
+                dateBtn.text = selectedDate
+                dateSelected = true
+                updateGetTicketsButtonState()
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
             // Set the minimum date to today to prevent past dates selection
             datePickerDialog.datePicker.minDate = c.timeInMillis
@@ -126,10 +122,12 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
         }
         //-----------------------------------------//
         // movie poster animations for the
-        val images = listOf(R.drawable.through_the_never, R.drawable.hangingposter_680)
+        val images = listOf(R.drawable.through_the_never, R.drawable.hangingposter_680,R.drawable.wallpaper)
         val adapter = ImageAdapter(images)
         val viewPager = findViewById<ViewPager2>(R.id.viewPagerImages)
         viewPager.adapter = adapter
+        val indicator = findViewById<CircleIndicator3>(R.id.indicator)
+        indicator.setViewPager(viewPager)
         val fadeIn = ObjectAnimator.ofFloat(viewPager, "alpha", 0f, 1f).setDuration(3000)
         val scaleUpX = ObjectAnimator.ofFloat(viewPager, "scaleX", 0f, 1.0f).setDuration(3000)
         val scaleUpY = ObjectAnimator.ofFloat(viewPager, "scaleY", 0f, 1.0f).setDuration(3000)
@@ -138,39 +136,36 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
             start()
         }
         //-----------------------------------------//
-        val spinnerAdult = findViewById<Spinner>(R.id.spinnerAdultAmount)
-        val spinnerChild = findViewById<Spinner>(R.id.spinnerChildAmount)
-        val spinnerBranch =findViewById<Spinner>(R.id.spinnerBranchLocation)
-        // Branch Spinner
+        // Branch Adapter
         val branchAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.branches_names,  // branches spinner data array
             R.layout.spinner_item     // custom layout here
         )
         branchAdapter.setDropDownViewResource(R.layout.spinner_item)
+        // set Branch Spinner
+        val spinnerBranch =findViewById<Spinner>(R.id.spinnerBranchLocation)
         spinnerBranch.adapter = branchAdapter
         spinnerBranch.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                // Check if a valid item has been selected
                 if (position == 0) {
-                    // First item (e.g., "Select a branch") is selected, show an error message
+                    // do not accept the default value
                     branchSelected = false
                     updateGetTicketsButtonState()
-                    //showErrorMessage(getString(R.string.please_select_a_valid_branch))
                 } else {
                     // A valid branch has been selected
                     branchName = parent?.getItemAtPosition(position).toString()
                     branchSelected = true
                     updateGetTicketsButtonState()
-                    // Do something with the selected branch
+                    Toast.makeText(this@MainActivity,
+                        getString(R.string.branch_name, branchName), Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Do nothing or show an error message
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
         //-----------------------------------------//
-        // Adapter for ticket
+        // Adapter for the: Adult & Child, Spinners
         val ticketAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.ticket_numbers,  // ticket spinner data array
@@ -178,7 +173,8 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
         )
         ticketAdapter.setDropDownViewResource(R.layout.spinner_item)
         //-----------------------------------------//
-        // Adult amount spinner
+        // set Adult amount spinner
+        val spinnerAdult = findViewById<Spinner>(R.id.spinnerAdultAmount)
         spinnerAdult .adapter = ticketAdapter
         spinnerAdult .onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -187,7 +183,7 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
                 position: Int,
                 id: Long
             ) {
-                // Check if a valid item has been selected
+                // do not accept the default value
                 if (position == 0 ) {
                     adultSelected = false
                     updateGetTicketsButtonState()
@@ -199,13 +195,13 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
                     Toast.makeText(this@MainActivity,
                         getString(R.string.adults_selected, adultAmount), Toast.LENGTH_SHORT)
                         .show()
-                    // Do something with the selected branch
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
         //-----------------------------------------//
         // Child amount spinner
+        val spinnerChild = findViewById<Spinner>(R.id.spinnerChildAmount)
         spinnerChild.adapter = ticketAdapter
         spinnerChild.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -216,6 +212,7 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
             ) {
                 // Check if a valid item has been selected
                 if (position == 0 ) {
+                    // do not accept the default value
                     childSelected = false
                     updateGetTicketsButtonState()
                 } else {
@@ -226,22 +223,17 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
                     Toast.makeText(this@MainActivity,
                         getString(R.string.child_selected, childAmount), Toast.LENGTH_SHORT)
                         .show()
-                    // Do something with the selected branch
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
         //---------------------------------
         // Confirm purchase button
-
-        btnGetTickets = findViewById<Button>(R.id.btnGetTickets)
-        btnGetTickets.isEnabled=true
         btnGetTickets.setOnClickListener {
             if(adultAmount ==0 && childAmount ==0){
                 showErrorMessage("At least 1 ticket per purchase")
                 btnGetTickets.isEnabled = false
                 updateGetTicketsButtonState()
-
             }else {
                 btnGetTickets.isEnabled = true
                 confirmPurchaseDialog()
@@ -262,7 +254,7 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
             .create()
         val purchaseInfoTextView = dialogView.findViewById<TextView>(R.id.tvPurchaseInfo)
         if (ticketPurchase != null) {
-            purchaseInfoTextView.text = ticketPurchase.toString()
+            purchaseInfoTextView.text = ticketPurchase.toLocalizedString(this)
         } else {
             purchaseInfoTextView.text = getString(R.string.no_purchase_info_available)
         }
@@ -275,18 +267,19 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
         val customDialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .create()
-
-        totalCost = (adultAmount.toInt() * 10) +(childAmount.toInt() * 5 )
-        // setting info
+        // calculate the cost
+        totalCost = (adultAmount * 10) +(childAmount * 5 )
+        // setting view with user selection data
         dialogView.findViewById<TextView>(R.id.tvNumberOfAdult).text =
-            getString(R.string.number_of_adult, adultAmount)
+            getString(R.string.adult_tickets, adultAmount)
         dialogView.findViewById<TextView>(R.id.tvNumberOfChild).text =
-            getString(R.string.number_of_child, childAmount)
+            getString(R.string.child_tickets, childAmount)
         dialogView.findViewById<TextView>(R.id.tvTotalCost).text =
             getString(R.string.total_cost, totalCost)
-        dialogView.findViewById<TextView>(R.id.tvDate).text = getString(R.string.date, dateBtn.text)
+        dialogView.findViewById<TextView>(R.id.tvDate).text = getString(R.string.event_date, dateBtn.text)
         dialogView.findViewById<TextView>(R.id.tvBranchName).text =
             getString(R.string.branch_name, branchName)
+        // creating the purchase object
         ticketPurchase = TicketPurchase(
             branchName,
             dateBtn.text.toString(),
@@ -294,6 +287,7 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
             childAmount,
             totalCost
         )
+        //
         dialogView.findViewById<Button>(R.id.btnConfirm).setOnClickListener {
             showHistoryDialog(ticketPurchase)
             customDialog.dismiss()
@@ -302,13 +296,6 @@ class MainActivity : AppCompatActivity(), DateSelectedListener {
         customDialog.show()
     }// end of onCreate()
 
-    //on selected dates
-    override fun onDateSelected(date: String) {
-        dateBtn.text = date
-        dateSelected = true
-        updateGetTicketsButtonState()
-
-    }
     private fun updateGetTicketsButtonState() {
         btnGetTickets.isEnabled = adultSelected && dateSelected && childSelected && branchSelected && (adultAmount > 0 || childAmount > 0)
     }

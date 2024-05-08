@@ -14,7 +14,7 @@ lifecycleRuntimeKtx = "2.7.0"
 materialIconsExtended = "1.6.7"
 constraintlayout = "2.1.4"
 material3 = "1.2.1"
-
+circleindicator = "2.1.6"
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-material3-window-size-info = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
@@ -24,6 +24,7 @@ androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", vers
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
+me-relex = { module = "me.relex:circleindicator", version.ref = "circleindicator" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx"}
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
